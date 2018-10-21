@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <description>Shiro 配置</description>
+
+    <!--shiroFilter工厂-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--构建securityManager环境-->
+        <property name="securityManager" ref="securityManager"/>
+
+       <!-- <property name="authorizationCachingEnabled" value="false"/>-->
+
+        <!--要求登录时的链接(可根据项目的URL进行替换)，非必需的属性，默认默认会自动寻找Web工程根目录下的"/login.jsp"页面-->
+       <!-- <property name="loginUrl" value="/index.jsp"/>-->
+        <!-- 登录成功后要跳转的连接 -->
+       <!-- <property name="successUrl" value="/views/main.jsp"/>-->
+        <!-- 没有权限返回的地址 （拒绝访问路径）-->
+      <!--  <property name="unauthorizedUrl" value="/unauthorized.jsp"/>-->
+
+        <property name="filters">
+            <util:map>
+
+            </util:map>
+        </property>
+
+        <!-- 读取自定义权限内容
+        1).anon可以被匿名访问
+        2).authc必须认证(登陆)后才可以访问的页面
+        -->
+
+
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- /shiro-cas = casFilter -->
+
+                /hello=anon
+                /login=anon
+                /logout = logout
+
+                #everything else requires authentication
+              <!--  /**=authc-->
+            </value>
+        </property>
+    </bean>
+
+    <bean id="myRealm" class="com.lwm.smarthome.shiro.MyRealm">
+        <property name="authorizationCachingEnabled" value="false"/>
+    </bean>
+    <!--定义需要特殊处理的异常，用类名或完全路径名作为key,异常页名作为值-->
+    <!--shiro权限异常处理-->
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--  设置自定义realm  ref="myRealm" -->
+        <property name="realms" ref="myRealm"/>
+    </bean>
+
+
+</beans>

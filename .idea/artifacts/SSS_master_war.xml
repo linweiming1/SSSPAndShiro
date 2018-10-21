@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SSS-master:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="SmartHome_1.0.war">
+      <element id="artifact" artifact-name="SSS-master:war exploded" />
+    </root>
+  </artifact>
+</component>
